@@ -1,0 +1,9 @@
+# general commands
+alias del="rm -rf"
+
+# git commands
+alias gpush="git push"
+alias gpull="git pull"
+alias gs="git status"
+alias gd="git diff"
+alias gbranch="git branch"
