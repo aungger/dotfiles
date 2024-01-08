@@ -1,9 +1,6 @@
-source ~/.aliases
 GREEN='\[\e[0;32m\]'
-YELLOW='\[\e[0;93m\]'
 LIGHT_BLUE='\[\e[0;96m\]'
 NC='\[\e[0m\]'
-
 
 find_git_branch () {
   local branch=$(git branch 2>/dev/null | grep \* | cut -d " " -f 2)
