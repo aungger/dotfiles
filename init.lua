@@ -1,4 +1,4 @@
-vim.cmd("set shiftwidth=1")
+vim.cmd("set shiftwidth=2")
 vim.cmd("set expandtab")
 vim.cmd("set number")
 vim.cmd("set tabstop=2")
@@ -31,10 +31,14 @@ vim.g.maplocalleader = "\\"
 require("lazy").setup({
   spec = {
     -- add your plugins here
-    { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
-    { "nvim-telescope/telescope.nvim", tag = "0.1.8", dependencies = { "nvim-lua/plenary.nvim" } },
-    { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
-    { 'nvim-neo-tree/neo-tree.nvim', branch = 'v3.x', dependencies = { 'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons', 'MunifTanjim/nui.nvim' }}
+    { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
+    { 'nvim-telescope/telescope.nvim', tag = '0.1.8', dependencies = { 'nvim-lua/plenary.nvim' } },
+    { 'nvim-telescope/telescope-ui-select.nvim' },
+    { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
+    { 'nvim-neo-tree/neo-tree.nvim', branch = 'v3.x', dependencies = { 'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons', 'MunifTanjim/nui.nvim' }},
+    { 'williamboman/mason.nvim' },
+    { 'williamboman/mason-lspconfig.nvim' },
+    { 'neovim/nvim-lspconfig' }
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
@@ -42,6 +46,46 @@ require("lazy").setup({
   -- automatically check for plugin updates
   checker = { enabled == true },
 })
+
+-- Setup mason for lsp
+require('mason').setup()
+require('mason-lspconfig').setup({
+  'lua_ls',
+  'bashls',
+  'pkgbuild_language_server',
+  'clangd',
+  'golangci_lint_ls',
+  'gopls',
+  'jsonls',
+  'biome',
+  'markdown_oxide',
+  'marksman',
+  'sqlls',
+  'sqls',
+  'gitlab_ci_ls',
+  'yamlls',
+  'hydra_lsp'
+})
+local lspconfig = require('lspconfig')
+lspconfig.lua_ls.setup({})
+lspconfig.bashls.setup({})
+lspconfig.pkgbuild_language_server.setup({})
+lspconfig.clangd.setup({})
+lspconfig.golangci_lint_ls.setup({})
+lspconfig.gopls.setup({})
+lspconfig.jsonls.setup({})
+lspconfig.biome.setup({})
+lspconfig.markdown_oxide.setup({})
+lspconfig.marksman.setup({})
+lspconfig.sqlls.setup({})
+lspconfig.sqls.setup({})
+lspconfig.gitlab_ci_ls.setup({})
+lspconfig.yamlls.setup({})
+lspconfig.hydra_lsp.setup({})
+vim.keymap.set('n', 'h', vim.lsp.buf.hover, {})
+vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {})
+vim.keymap.set('n', 'gr', vim.lsp.buf.references, {})
+vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, {})
 
 -- Setup treesitter
 local configs = require("nvim-treesitter.configs")
@@ -59,7 +103,16 @@ vim.keymap.set('n', '<leader>t', ':Neotree filesystem reveal left<CR>')
 require("catppuccin").setup()
 vim.cmd.colorscheme "catppuccin"
 
--- Setup Telescope
-local builtin = require("telescope.builtin")
+-- Setup Telescope and telescope ui select
+local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+
+require('telescope').setup({
+  extension = {
+    ['ui-select'] = {
+      require('telescope.themes').get_dropdown({})
+    }
+  }
+})
+require('telescope').load_extension('ui-select')
