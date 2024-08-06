@@ -44,12 +44,68 @@ require("lazy").setup({
     { "williamboman/mason-lspconfig.nvim" },
     { "neovim/nvim-lspconfig" },
     { "nvimtools/none-ls.nvim" },
+    { "hrsh7th/nvim-cmp" },
+    {
+      "L3MON4D3/LuaSnip",
+      dependencies = { "rafamadriz/friendly-snippets", "saadparwaiz1/cmp_luasnip" },
+    },
+    { "hrsh7th/cmp-nvim-lsp" },
+    { "mfussenegger/nvim-dap", dependencies = { "rcarriga/nvim-dap-ui", "nvim-neotest/nvim-nio", "leoluz/nvim-dap-go" } },
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
   install = { colorscheme = { "habamax" } },
   -- automatically check for plugin updates
   checker = { enabled == true },
+})
+
+-- Setup debugger
+local dap = require("dap")
+local dapui = require("dapui")
+require("dapui").setup()
+require("dap-go").setup() -- @todo: need to setup delve on your computer
+dap.listeners.before.attach.dapui_config = function()
+  dapui.open()
+end
+dap.listeners.before.launch.dapui_config = function()
+  dapui.open()
+end
+dap.listeners.before.event_terminated.dapui_config = function()
+  dapui.close()
+end
+dap.listeners.before.event_exited.dapui_config = function()
+  dapui.close()
+end
+vim.keymap.set("n", "<Leader>dt", dap.toggle_breakpoint, {})
+vim.keymap.set("n", "<Leader>dc", dap.continue, {})
+
+-- Setup autocompletions and snippets
+local cmp = require("cmp")
+require("luasnip.loaders.from_vscode").lazy_load() -- @todo: need to fix
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      require("luasnip").lsp_expand(args.body)
+    end,
+  },
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
+  },
+  mapping = cmp.mapping.preset.insert({
+    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-f>"] = cmp.mapping.scroll_docs(4),
+    ["<C-Space>"] = cmp.mapping.complete(),
+    ["<C-e>"] = cmp.mapping.abort(),
+    ["<CR>"] = cmp.mapping.confirm({ select = true }),
+  }),
+  source = cmp.config.sources({
+    { name = "nvim_lsp" },
+    { name = "luasnip" },
+  }, {
+    { name = "buffer" },
+  }),
 })
 
 -- Setup linter and formatter
@@ -82,7 +138,7 @@ require("mason-lspconfig").setup({
   "hydra_lsp",
 })
 local lspconfig = require("lspconfig")
-lspconfig.lua_ls.setup({})
+lspconfig.lua_ls.setup({ capabilities = capabilities })
 lspconfig.bashls.setup({})
 lspconfig.pkgbuild_language_server.setup({})
 lspconfig.clangd.setup({})
@@ -97,7 +153,7 @@ lspconfig.sqls.setup({})
 lspconfig.gitlab_ci_ls.setup({})
 lspconfig.yamlls.setup({})
 lspconfig.hydra_lsp.setup({})
-vim.keymap.set("n", "h", vim.lsp.buf.hover, {})
+vim.keymap.set("n", "gh", vim.lsp.buf.hover, {})
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
 vim.keymap.set("n", "gr", vim.lsp.buf.references, {})
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
