@@ -128,7 +128,6 @@ require("mason-lspconfig").setup({
   "bashls",
   "pkgbuild_language_server",
   "clangd",
-  "java_language_server",
   "golangci_lint_ls",
   "gopls",
   "jsonls",
@@ -145,7 +144,6 @@ lspconfig.bashls.setup({})
 lspconfig.pkgbuild_language_server.setup({})
 lspconfig.clangd.setup({})
 lspconfig.golangci_lint_ls.setup({})
-lspconfig.java_language_server.setup({})
 lspconfig.gopls.setup({})
 lspconfig.jsonls.setup({})
 lspconfig.biome.setup({})
