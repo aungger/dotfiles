@@ -2,6 +2,8 @@ vim.cmd("set shiftwidth=2")
 vim.cmd("set expandtab")
 vim.cmd("set number")
 vim.cmd("set tabstop=2")
+vim.cmd("set scrolloff=999")
+vim.cmd("set colorcolumn=80")
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -31,6 +33,7 @@ vim.g.maplocalleader = "\\"
 require("lazy").setup({
   spec = {
     -- add your plugins here
+    { "lewis6991/gitsigns.nvim" },
     { "catppuccin/nvim",                        name = "catppuccin", priority = 1000 },
     { "nvim-telescope/telescope.nvim",          tag = "0.1.8",       dependencies = { "nvim-lua/plenary.nvim" } },
     { "nvim-telescope/telescope-ui-select.nvim" },
@@ -125,6 +128,7 @@ require("mason-lspconfig").setup({
   "bashls",
   "pkgbuild_language_server",
   "clangd",
+  "java_language_server",
   "golangci_lint_ls",
   "gopls",
   "jsonls",
@@ -133,9 +137,7 @@ require("mason-lspconfig").setup({
   "marksman",
   "sqlls",
   "sqls",
-  "gitlab_ci_ls",
   "yamlls",
-  "hydra_lsp",
 })
 local lspconfig = require("lspconfig")
 lspconfig.lua_ls.setup({ capabilities = capabilities })
@@ -143,6 +145,7 @@ lspconfig.bashls.setup({})
 lspconfig.pkgbuild_language_server.setup({})
 lspconfig.clangd.setup({})
 lspconfig.golangci_lint_ls.setup({})
+lspconfig.java_language_server.setup({})
 lspconfig.gopls.setup({})
 lspconfig.jsonls.setup({})
 lspconfig.biome.setup({})
@@ -150,9 +153,7 @@ lspconfig.markdown_oxide.setup({})
 lspconfig.marksman.setup({})
 lspconfig.sqlls.setup({})
 lspconfig.sqls.setup({})
-lspconfig.gitlab_ci_ls.setup({})
 lspconfig.yamlls.setup({})
-lspconfig.hydra_lsp.setup({})
 vim.keymap.set("n", "gh", vim.lsp.buf.hover, {})
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
 vim.keymap.set("n", "gr", vim.lsp.buf.references, {})
@@ -161,7 +162,7 @@ vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
 -- Setup treesitter
 local configs = require("nvim-treesitter.configs")
 configs.setup({
-  ensure_installed = { "c", "lua", "go", "vim" },
+  ensure_installed = { "java", "c", "lua", "go", "vim" },
   sync_install = false,
   highlight = { enable = true },
   indent = { enable = true },
@@ -172,7 +173,7 @@ vim.keymap.set("n", "<leader>t", ":Neotree filesystem reveal left<CR>")
 
 -- Setup catppuccin colorscheme
 require("catppuccin").setup()
-vim.cmd.colorscheme("catppuccin-mocha")
+vim.cmd.colorscheme("catppuccin-macchiato")
 
 -- Setup Telescope and telescope ui select
 local builtin = require("telescope.builtin")
@@ -187,3 +188,6 @@ require("telescope").setup({
   },
 })
 require("telescope").load_extension("ui-select")
+
+-- Setup gitsigns
+require("gitsigns").setup()
