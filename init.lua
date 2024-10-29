@@ -162,7 +162,7 @@ vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
 -- Setup treesitter
 local configs = require("nvim-treesitter.configs")
 configs.setup({
-  ensure_installed = { "java", "c", "lua", "go", "vim" },
+  ensure_installed = { "c", "lua", "go", "vim" },
   sync_install = false,
   highlight = { enable = true },
   indent = { enable = true },
