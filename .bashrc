@@ -23,5 +23,4 @@ find_git_branch_dirty () {
 }
 
 PROMPT_COMMAND="find_git_branch; find_git_branch_dirty;"
-export PS1="\n${YELLOW}\t ${NC}\w${GREEN} \$git_branch\$dirty\n${LIGHT_BLUE}> ${NC}"
-
+export PS1="\n\w${GREEN} \$git_branch\$dirty\n${LIGHT_BLUE}$(printf '\u2192') ${NC}"
