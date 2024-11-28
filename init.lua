@@ -4,6 +4,8 @@ vim.cmd("set number")
 vim.cmd("set tabstop=2")
 vim.cmd("set scrolloff=999")
 vim.cmd("set colorcolumn=80")
+vim.cmd("set cursorline")
+vim.cmd("set relativenumber")
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -33,6 +35,7 @@ vim.g.maplocalleader = "\\"
 require("lazy").setup({
   spec = {
     -- add your plugins here
+    { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
     { "lewis6991/gitsigns.nvim" },
     { "catppuccin/nvim",                        name = "catppuccin", priority = 1000 },
     { "nvim-telescope/telescope.nvim",          tag = "0.1.8",       dependencies = { "nvim-lua/plenary.nvim" } },
