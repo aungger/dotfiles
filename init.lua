@@ -3,7 +3,7 @@ vim.cmd("set expandtab")
 vim.cmd("set number")
 vim.cmd("set tabstop=2")
 vim.cmd("set scrolloff=999")
-vim.cmd("set colorcolumn=80")
+vim.cmd("set colorcolumn=120")
 vim.cmd("set cursorline")
 vim.cmd("set relativenumber")
 
@@ -180,6 +180,7 @@ vim.cmd.colorscheme("catppuccin-macchiato")
 local builtin = require("telescope.builtin")
 vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
 vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
+vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
 
 require("telescope").setup({
   extension = {
@@ -192,3 +193,7 @@ require("telescope").load_extension("ui-select")
 
 -- Setup gitsigns
 require("gitsigns").setup()
+
+vim.keymap.set("n", "<leader>bl", ":bnext<CR>")
+vim.keymap.set("n", "<leader>bh", ":bprev<CR>")
+vim.keymap.set("n", "<leader>bd", ":bdelete<CR>")
