@@ -6,6 +6,8 @@ vim.cmd("set scrolloff=999")
 vim.cmd("set colorcolumn=120")
 vim.cmd("set cursorline")
 vim.cmd("set relativenumber")
+vim.cmd("set list")
+vim.cmd("set listchars=tab:»_,trail:·,eol:¬")
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -40,12 +42,6 @@ require("lazy").setup({
     { "catppuccin/nvim",                        name = "catppuccin", priority = 1000 },
     { "nvim-telescope/telescope.nvim",          tag = "0.1.8",       dependencies = { "nvim-lua/plenary.nvim" } },
     { "nvim-telescope/telescope-ui-select.nvim" },
-    { "nvim-treesitter/nvim-treesitter",        build = ":TSUpdate" },
-    {
-      "nvim-neo-tree/neo-tree.nvim",
-      branch = "v3.x",
-      dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim" },
-    },
     { "williamboman/mason.nvim" },
     { "williamboman/mason-lspconfig.nvim" },
     { "neovim/nvim-lspconfig" },
@@ -159,18 +155,6 @@ vim.keymap.set("n", "gh", vim.lsp.buf.hover, {})
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
 vim.keymap.set("n", "gr", vim.lsp.buf.references, {})
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
-
--- Setup treesitter
-local configs = require("nvim-treesitter.configs")
-configs.setup({
-  ensure_installed = { "c", "lua", "go", "vim" },
-  sync_install = false,
-  highlight = { enable = true },
-  indent = { enable = true },
-})
-
--- Setup Neo tree
-vim.keymap.set("n", "<leader>t", ":Neotree filesystem reveal left<CR>")
 
 -- Setup catppuccin colorscheme
 require("catppuccin").setup()
