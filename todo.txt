@@ -1,0 +1,1 @@
+1. enable auto text wrapping once character limit has been reached
